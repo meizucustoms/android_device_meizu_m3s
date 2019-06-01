@@ -89,7 +89,7 @@ PRODUCT_PACKAGES += \
 
 # BT A2DP
 PRODUCT_COPY_FILES += \
-    vendor/meizu/meilan3/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.mt6750.so
+	vendor/meizu/m3s/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.mt6750.so
 
 # Audio componets from source
 PRODUCT_PACKAGES += \
