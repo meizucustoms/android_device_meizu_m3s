@@ -1,4 +1,4 @@
-# android_device_meizu_meilan3
+# android_device_meizu_m3s
 Device repository for Meizu M3 Mini (CyanogenMod)
 
 Fork of https://github.com/divis1969/android_device_meizu_meilan2
@@ -37,7 +37,7 @@ https://github.com/SlimRoms/frameworks_base/commit/81760e4b9026c3b3153a8e6691494
 Build the code:
 
     source build/envsetup.sh
-    lunch meilan3
+    lunch m3s
     mka 4 bacon showcommands 2>&1 | tee build.log
 
 Current state
@@ -61,7 +61,7 @@ Known Issues
 -------------
 - Camera video doesnt work
 
-All issues: https://github.com/washinson/android_device_meizu_meilan3/issues
+All issues: https://github.com/ElXreno/android_device_meizu_m3s/issues
 
 Change log
 ----------

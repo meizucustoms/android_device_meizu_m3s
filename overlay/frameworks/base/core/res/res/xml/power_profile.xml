@@ -58,6 +58,6 @@
         <value>448</value>
         <value>519</value>
     </array>
-    <item name="battery.capacity">2820</item>
+    <item name="battery.capacity">3000</item>
     <item name="battery.low.volt">3400</item>
 </device>
