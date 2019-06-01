@@ -35,6 +35,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_FOLDER)/rootdir/ueventd.rc:root/ueventd.rc \
 	$(DEVICE_FOLDER)/etc/media_codecs.xml:system/etc/media_codecs.xml \
 	$(DEVICE_FOLDER)/media_profiles.xml:system/etc/media_profiles.xml \
+	frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:system/etc/a2dp_audio_policy_configuration.xml \
 	frameworks/native/data/etc/android.software.app_widgets.xml:system/etc/permissions/android.software.app_widgets.xml \
 	frameworks/native/data/etc/android.hardware.audio.output.xml:system/etc/permissions/android.hardware.audio.output.xml \
 	frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
@@ -85,6 +86,7 @@ PRODUCT_COPY_FILES += \
 # Audio componets from source
 PRODUCT_PACKAGES += \
 	audio.usb.default \
+	audio.a2dp.default \
 	audio.r_submix.default
 
 # BT A2DP (commented, 'cause it's exists in vendor)
