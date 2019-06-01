@@ -87,9 +87,9 @@ PRODUCT_PACKAGES += \
 	audio.usb.default \
 	audio.r_submix.default
 
-# BT A2DP (commented, 'cause it's exists in vendor)
-# PRODUCT_COPY_FILES += \
-# 	vendor/meizu/m3s/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.blueangel.so
+# BT A2DP
+PRODUCT_COPY_FILES += \
+    vendor/meizu/meilan3/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.mt6750.so
 
 # Audio componets from source
 PRODUCT_PACKAGES += \
