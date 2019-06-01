@@ -1,5 +1,5 @@
 # android_device_meizu_m3s
-Device repository for Meizu M3 Mini (CyanogenMod)
+Device repository for Meizu M3s (CyanogenMod)
 
 Fork of https://github.com/divis1969/android_device_meizu_meilan2
 ===========================
