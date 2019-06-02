@@ -89,20 +89,21 @@ public class MT6755 extends RIL implements CommandsInterface {
     @Override
     protected void
     processUnsolicited (Parcel p, int type) {
+        Parcel parcel = p;
         Object ret;
-        int dataPosition = p.dataPosition(); // save off position within the Parcel
-        int response = p.readInt();
+        int dataPosition = parcel.dataPosition(); // save off position within the Parcel
+        int response = parcel.readInt();
 
         switch(response) {
-            case RIL_UNSOL_RESPONSE_REGISTRATION_SUSPENDED: ret = responseRegSuspended(p); break;
-            case RIL_UNSOL_INCOMING_CALL_INDICATION: ret = responseIncomingCallIndication(p); break;
-            case RIL_UNSOL_CALL_INFO_INDICATION: ret = responseCallProgress(p); break;
-            case RIL_UNSOL_SET_ATTACH_APN: ret = responseSetAttachApn(p); break;
-            case RIL_UNSOL_ON_USSD: ret =  responseStrings(p); break;
-            case RIL_UNSOL_RESPONSE_PS_NETWORK_STATE_CHANGED: ret = responseInts(p); break;
+            case RIL_UNSOL_RESPONSE_REGISTRATION_SUSPENDED: ret = responseRegSuspended(parcel); break;
+            case RIL_UNSOL_INCOMING_CALL_INDICATION: ret = responseIncomingCallIndication(parcel); break;
+            case RIL_UNSOL_CALL_INFO_INDICATION: ret = responseCallProgress(parcel); break;
+            case RIL_UNSOL_SET_ATTACH_APN: ret = responseSetAttachApn(parcel); break;
+            case RIL_UNSOL_ON_USSD: ret =  responseStrings(parcel); break;
+            case RIL_UNSOL_RESPONSE_PS_NETWORK_STATE_CHANGED: ret = responseInts(parcel); break;
             default:
                 // Rewind the Parcel
-                p.setDataPosition(dataPosition);
+                parcel.setDataPosition(dataPosition);
                 // Forward responses that we are not overriding to the super class
                 super.processUnsolicited(p, type);
                 return;
