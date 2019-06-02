@@ -615,6 +615,7 @@ vendor/lib/mediadrm/libwvdrmengine.so
 xbin/BGW
 xbin/mnld
 xbin/MPED
+xbin/showmap
 etc/spn-conf.xml
 etc/apns-conf.xml
 etc/ecc_list.xml
@@ -631,3 +632,10 @@ etc/mddb/MDDB.META_MT6750_S00_MOLY_LR11_W1539_MD_MP_V19_P58_1_ulwctg_n.EDB
 etc/mddb/MDDB.META_MT6750_S00_MOLY_LR11_W1539_MD_MP_V19_P67_1_ulwctg_n.EDB
 etc/mddb/MDDB.META_MT6750_S00_MOLY_LR11_W1539_MD_MP_V19_P75_1_ulwctg_n.EDB
 etc/mddb/mdm_layout_desc_1_ulwctg_n.dat
+app/YGPS/YGPS.apk
+lib64/libril.so
+lib/libril.so
+lib64/libreference-ril.so
+lib/libreference-ril.so
+lib64/librilutils.so
+lib/librilutils.so
