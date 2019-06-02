@@ -24,6 +24,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_FOLDER)/rootdir/enableswap.sh:root/enableswap.sh \
 	$(DEVICE_FOLDER)/rootdir/init.mt6755.rc:root/init.mt6755.rc \
 	$(DEVICE_FOLDER)/rootdir/init.ssd.rc:root/init.ssd.rc \
+	$(DEVICE_FOLDER)/rootdir/init.volte.rc:root/init.volte.rc \
 	$(DEVICE_FOLDER)/rootdir/init.xlog.rc:root/init.xlog.rc \
 	$(DEVICE_FOLDER)/rootdir/init.usb.rc:root/init.usb.rc \
 	$(DEVICE_FOLDER)/rootdir/init.mt6755.usb.rc:root/init.mt6755.usb.rc \
@@ -34,7 +35,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_FOLDER)/rootdir/fstab.mt6755:root/fstab.mt6755 \
 	$(DEVICE_FOLDER)/rootdir/ueventd.rc:root/ueventd.rc \
 	$(DEVICE_FOLDER)/etc/media_codecs.xml:system/etc/media_codecs.xml \
-	$(DEVICE_FOLDER)/media_profiles.xml:system/etc/media_profiles.xml \
+	$(DEVICE_FOLDER)/etc/media_profiles.xml:system/etc/media_profiles.xml \
 	frameworks/native/data/etc/android.software.app_widgets.xml:system/etc/permissions/android.software.app_widgets.xml \
 	frameworks/native/data/etc/android.hardware.audio.output.xml:system/etc/permissions/android.hardware.audio.output.xml \
 	frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
@@ -115,17 +116,30 @@ ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0 \
 	debug.hwui.render_dirty_regions=false \
 	ro.sf.lcd_density=320 \
 	ro.hardware.bluetooth=blueangel \
-	persist.radio.multisim.config=dsds \
-	ro.mtk_lte_support=1 \
-	ro.telephony.ril_class=MediaTekRIL \
-	ro.telephony.ril.config=fakeiccid \
-	ro.telephony.sim.count=2 \
-	persist.gemini.sim_num=2 \
-	ril.current.share_modem=2 \
 	ro.mtk_gps_support=1 \
 	ro.mtk_agps_app=1 \
 	persist.debug.xlog.enable=1 \
 	persist.mtk.wcn.combo.chipid=-1
+
+# Radio
+ADDITIONAL_DEFAULT_PROPERTIES += persist.multisim.config=dsds \
+	persist.radio.multisim.config=dsds \
+	persist.md.perm.checked=to_upgrade \
+	persist.gemini.sim_num=2 \
+	ro.mtk_c2k_support=1 \
+	ro.mtk_lte_support=1 \
+	ro.gemini.smart_sim_switch=true \
+	ro.telephony.ril_class=MediaTekRIL \
+	ro.telephony.ril.config=signalstrength \
+	ro.telephony.sim.count=2 \
+	ril.current.share_modem=2 \
+	ril.specific.sm_cause=0 \
+	ril.external.md=0 \
+	ril.first.md=1 \
+	ril.flightmode.poweroffMD=1 \
+	ril.telephony.mode=0 \
+	ril.radiooff.poweroffMD=0 \
+	ril.active.md=0 \
 
 # These additionals go to /system/build.prop
 # ADDITIONAL_BUILD_PROPERTIES += \
