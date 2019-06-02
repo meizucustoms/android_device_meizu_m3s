@@ -105,7 +105,7 @@ public class MT6755 extends RIL implements CommandsInterface {
                 // Rewind the Parcel
                 parcel.setDataPosition(dataPosition);
                 // Forward responses that we are not overriding to the super class
-                super.processUnsolicited(p, type);
+                // super.processUnsolicited(p, type);
                 return;
         }
         switch(response) {
