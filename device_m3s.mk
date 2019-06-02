@@ -1,4 +1,4 @@
-DEVICE_FOLDER := device/meizu/m3s
+LOCAL_PATH := device/meizu/m3s
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
@@ -20,22 +20,22 @@ TARGET_OTA_ASSERT_DEVICE := m3s,m3,meizu_m3_mini,meilan3
 TARGET_PROVIDES_INIT_RC := true
 
 PRODUCT_COPY_FILES += \
-	$(DEVICE_FOLDER)/rootdir/init.rc:root/init.rc \
-	$(DEVICE_FOLDER)/rootdir/enableswap.sh:root/enableswap.sh \
-	$(DEVICE_FOLDER)/rootdir/init.mt6755.rc:root/init.mt6755.rc \
-	$(DEVICE_FOLDER)/rootdir/init.ssd.rc:root/init.ssd.rc \
-	$(DEVICE_FOLDER)/rootdir/init.volte.rc:root/init.volte.rc \
-	$(DEVICE_FOLDER)/rootdir/init.xlog.rc:root/init.xlog.rc \
-	$(DEVICE_FOLDER)/rootdir/init.usb.rc:root/init.usb.rc \
-	$(DEVICE_FOLDER)/rootdir/init.mt6755.usb.rc:root/init.mt6755.usb.rc \
-	$(DEVICE_FOLDER)/rootdir/init.aee.rc:root/init.aee.rc \
-	$(DEVICE_FOLDER)/rootdir/init.project.rc:root/init.project.rc \
-	$(DEVICE_FOLDER)/rootdir/init.modem.rc:root/init.modem.rc \
-	$(DEVICE_FOLDER)/rootdir/init.trace.rc:root/init.trace.rc \
-	$(DEVICE_FOLDER)/rootdir/fstab.mt6755:root/fstab.mt6755 \
-	$(DEVICE_FOLDER)/rootdir/ueventd.rc:root/ueventd.rc \
-	$(DEVICE_FOLDER)/etc/media_codecs.xml:system/etc/media_codecs.xml \
-	$(DEVICE_FOLDER)/etc/media_profiles.xml:system/etc/media_profiles.xml \
+	$(LOCAL_PATH)/rootdir/init.rc:root/init.rc \
+	$(LOCAL_PATH)/rootdir/enableswap.sh:root/enableswap.sh \
+	$(LOCAL_PATH)/rootdir/init.mt6755.rc:root/init.mt6755.rc \
+	$(LOCAL_PATH)/rootdir/init.ssd.rc:root/init.ssd.rc \
+	$(LOCAL_PATH)/rootdir/init.volte.rc:root/init.volte.rc \
+	$(LOCAL_PATH)/rootdir/init.xlog.rc:root/init.xlog.rc \
+	$(LOCAL_PATH)/rootdir/init.usb.rc:root/init.usb.rc \
+	$(LOCAL_PATH)/rootdir/init.mt6755.usb.rc:root/init.mt6755.usb.rc \
+	$(LOCAL_PATH)/rootdir/init.aee.rc:root/init.aee.rc \
+	$(LOCAL_PATH)/rootdir/init.project.rc:root/init.project.rc \
+	$(LOCAL_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
+	$(LOCAL_PATH)/rootdir/init.trace.rc:root/init.trace.rc \
+	$(LOCAL_PATH)/rootdir/fstab.mt6755:root/fstab.mt6755 \
+	$(LOCAL_PATH)/rootdir/ueventd.rc:root/ueventd.rc \
+	$(LOCAL_PATH)/etc/media/media_codecs.xml:system/etc/media_codecs.xml \
+	$(LOCAL_PATH)/etc/media/media_profiles.xml:system/etc/media_profiles.xml \
 	frameworks/native/data/etc/android.software.app_widgets.xml:system/etc/permissions/android.software.app_widgets.xml \
 	frameworks/native/data/etc/android.hardware.audio.output.xml:system/etc/permissions/android.hardware.audio.output.xml \
 	frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
@@ -58,12 +58,10 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 	frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
 
-#PRODUCT_PACKAGES += \
-#    libion \
-#    libmockdrmcryptoplugin \
-#    libaudio-resampler \
-#    libtinycompress \
-#    libtinyxml
+# Telephony
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/etc/telephony/ecc_list.xml:system/etc/ecc_list.xml \
+	$(LOCAL_PATH)/etc/telephony/spn-conf.xml:system/etc/spn-conf.xml
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -81,7 +79,9 @@ PRODUCT_PACKAGES += \
 	wpa_supplicant.conf
 
 PRODUCT_COPY_FILES += \
-	$(DEVICE_FOLDER)/rootdir/etc/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+	$(LOCAL_PATH)/etc/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+	$(LOCAL_PATH)/etc/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
+	$(LOCAL_PATH)/etc/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
 # Audio componets from source
 PRODUCT_PACKAGES += \
@@ -97,7 +97,7 @@ PRODUCT_PACKAGES += \
 	EngineerMode \
 	MtkCamera libDocVfbEngineLib_m81 libpanorama
 
-PRODUCT_EXTRA_RECOVERY_KEYS += $(DEVICE_FOLDER)/meizu
+PRODUCT_EXTRA_RECOVERY_KEYS += $(LOCAL_PATH)/meizu
 
 #$(call inherit-product, build/target/product/full.mk)
 $(call inherit-product, build/target/product/aosp_arm64.mk)

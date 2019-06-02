@@ -1,4 +1,4 @@
-DEVICE_FOLDER := device/meizu/m3s
+LOCAL_PATH := device/meizu/m3s
 
 # inherit from the proprietary version
 -include vendor/meizu/m3s/BoardConfigVendor.mk
@@ -55,15 +55,15 @@ BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x04f88000 -
 # end of commented lines
 
 # prebuilt kernel image
-TARGET_PREBUILT_KERNEL := $(DEVICE_FOLDER)/prebuilt/kernel
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 BOARD_HAS_NO_SELECT_BUTTON := true
 # recovery
-# TARGET_RECOVERY_INITRC := $(DEVICE_FOLDER)/recovery/init.mt6753.rc
-TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/recovery/root/fstab.mt6735
+# TARGET_RECOVERY_INITRC := $(LOCAL_PATH)/recovery/init.mt6753.rc
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/fstab.mt6735
 TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/devices/platform/leds-mt65xx/leds/lcd-backlight/brightness\"
 
 # system.prop
-TARGET_SYSTEM_PROP := $(DEVICE_FOLDER)/system.prop
+TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
 # WiFi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -81,38 +81,14 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_MTK := true
 BOARD_BLUETOOTH_DOES_NOT_USE_RFKILL := true
 
-# twrp ( WIP do not use!!! see comments )
+# RIL
+BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
+BOARD_CONNECTIVITY_MODULE := conn_soc
 
-# tw_theme is essential flag
+# TWRP
 TW_THEME := portrait_hdpi
-
-# brightness settings (needs verification)
 TW_BRIGHTNESS_PATH := /sys/devices/platform/leds-mt65xx/leds/lcd-backlight/brightness/
 TW_MAX_BRIGHTNESS := 255
-
-# may be usefull if we get graphical glitches
-# RECOVERY_GRAPHICS_USE_LINELENGTH := true
-
-# in case of wrong color this needs modification
-# TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-
-# if sdcard0 is a /data/media emulated one
-# RECOVERY_SDCARD_ON_DATA := true
-
-# ntfs support? (needs much space..)
-# TW_INCLUDE_NTFS_3G := true
-
-# we may need that if sdcard0 dont work
-# TW_FLASH_FROM_STORAGE := true
-# TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-# TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-# TW_DEFAULT_EXTERNAL_STORAGE := true
-
-# only add if kernel supports
-# TW_INCLUDE_FUSE_EXFAT := true
-
-# F2FS support (only activate if kernel supports)
-# TARGET_USERIMAGES_USE_F2FS:=true
 
 # Camera
 USE_CAMERA_STUB := true
@@ -125,7 +101,7 @@ COMMON_GLOBAL_CPPFLAGS += -DMTK_HARDWARE -DMTK_AOSP_ENHANCEMENT
 
 # EGL settings
 USE_OPENGL_RENDERER := true
-BOARD_EGL_CFG := $(DEVICE_FOLDER)/egl.cfg
+BOARD_EGL_CFG := $(LOCAL_PATH)/etc/egl.cfg
 
 # CyanogenMod Hardware Hooks
-BOARD_HARDWARE_CLASS := $(DEVICE_FOLDER)/cmhw/
+BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/

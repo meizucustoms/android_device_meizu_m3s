@@ -616,9 +616,7 @@ xbin/BGW
 xbin/mnld
 xbin/MPED
 xbin/showmap
-etc/spn-conf.xml
 etc/apns-conf.xml
-etc/ecc_list.xml
 etc/mddb/DbgInfo_DSP_MT6750_MOLY_LR11_W1539_MD_MP_V19_P58_2016_08_11_00_44_1_ulwctg_n
 etc/mddb/DbgInfo_DSP_MT6750_MOLY_LR11_W1539_MD_MP_V19_P67_2016_12_02_17_56_1_ulwctg_n
 etc/mddb/DbgInfo_DSP_MT6750_MOLY_LR11_W1539_MD_MP_V19_P75_2017_07_17_16_05_1_ulwctg_n
