@@ -178,6 +178,12 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
 
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.allow.mock.location=1 \
+    ro.debuggable=1 \
+    ro.adb.secure=0
+
 # never dexopt the keyhandler
 $(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
 
