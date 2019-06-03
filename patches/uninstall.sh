@@ -7,8 +7,8 @@ dirs="frameworks/base frameworks/opt/telephony hardware/libhardware packages/ser
 for dir in $dirs ; do
 	cd $rootdirectory
 	cd $dir
-	echo "Applying $dir patches..."
-	git apply $rootdirectory/device/oppo/a37/patches/$dir/*.patch
+	echo "Reverting $dir patches..."
+	git apply --reverse $rootdirectory/device/oppo/a37/patches/$dir/*.patch
 	echo " "
 done
 
