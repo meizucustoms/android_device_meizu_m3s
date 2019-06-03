@@ -7,6 +7,12 @@ import init.trustonic.rc
 import init.nvdata.rc
 import init.microtrust.rc
 
+#ifdef VENDOR_EDIT  //guomingqiang@phone.bsp 2015-12-07 add for mos
+import /init.usb.rc               
+import /init.${ro.hardware}.rc    
+import /init.trace.rc             
+#endif //VENDOR_EDIT 
+
 on early-init
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_score_adj -1000
@@ -230,6 +236,12 @@ on post-fs-data
     mkdir /data/app-private 0771 system system
     mkdir /data/app 0771 system system
     mkdir /data/property 0700 root root
+
+	#ifdef VENDOR_EDIT
+	#hedong.liu@Connectivity.WiFi, 2015/01/27, Add for mos mode
+	chown system system /system/etc/wifi_mos.sh
+	chmod 0777  /system/etc/wifi_mos.sh
+	#endif /*VENDOR_EDIT*/
 
     # create the lost+found directories, so as to enforce our permissions
     mkdir /data/lost+found 0770
@@ -476,6 +488,19 @@ on property:sys.powerctl=*
 on property:ro.debuggable=1
     start console
 
+#ifdef VENDOR_EDIT
+#hedong.liu@Connectivity.WiFi, 2015/01/27, Add for mos mode
+service WifiMosServ /system/bin/sh system/etc/wifi_mos.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:WMosMod=1
+    start WifiMosServ
+#endif /*VENDOR_EDIT*/
+
 # adbd is controlled via property triggers in init.<platform>.usb.rc
 service adbd /sbin/adbd --root_seclabel=u:r:su:s0
     class core
@@ -562,9 +587,12 @@ service thermal_manager /system/bin/thermal_manager
     user root
     oneshot
 
-service factory_no_image /system/bin/factory
+
+#ifdef VENDOR_EDIT  //guomingqiang@phone.bsp 2015-12-07 add for mos
+service factory_no_image /system/bin/mos
     disabled
-    oneshot
+    #oneshot
+#endif //VENDOR_EDIT 
 
 service factory_with_image /sbin/factory
 	disabled

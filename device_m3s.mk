@@ -55,7 +55,9 @@ PRODUCT_PACKAGES += \
     meta_init.modem.rc \
     meta_init.project.rc \
     meta_init.rc \
-    ueventd.rc
+    mos_init.project.rc \
+    mos_init.rc \
+    ueventd.mt6755.rc
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \

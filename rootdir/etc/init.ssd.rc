@@ -27,12 +27,12 @@ on init
     mkdir /storage/sdcard1 0700 root root
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
-
+#ifdef VENDOR_EDIT
+#Fangfang.Hui@Swdp.Android.Usb, 2016/01/07, Add for export sdcard environment access
+    export SECONDARY_STORAGE /storage/sdcard1
+#endif /*VENDOR_EDIT*/
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
-
-    #modify by wangchun for #270709 app to sdcard
-    export SECONDARY_STORAGE /storage/sdcard1
 
     mount tmpfs tmpfs /storage/emulated mode=0755,uid=1023,gid=1023
     

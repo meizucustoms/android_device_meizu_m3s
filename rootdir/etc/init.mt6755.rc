@@ -1,5 +1,6 @@
 # MTK platform .rc configure
 
+import init.modem.rc
 import init.project.rc
 import /FWUpgradeInit.rc
 import init.xlog.rc
@@ -25,11 +26,12 @@ on init
 
     # BATTERY proc
     chown shell system /proc/mtk_battery_cmd/current_cmd
-	# xuecheng@wind-mobi.com add for bsp test 20160427
-	chmod 0664 /proc/mtk_battery_cmd/current_cmd
-	# xuecheng@wind-mobi.com add for bsp test 20160427
     chown shell system /proc/mtk_battery_cmd/discharging_cmd
-
+    #ifdef VENDOR_EDIT//Bingshu.Zhou@Swdp.Android.Boot.Init, 2015/12/22, Modify for cpu all boot up and max freq
+    # cpu all boot up and max freq
+    write /proc/ppm/policy/ut_fix_core_num "4 4"
+    write /proc/ppm/policy/ut_fix_freq_idx "0 0"
+    #endif/*VENDOR_EDIT*/
     export USBOTG_STORAGE /storage/usbotg
 # Temp Backward compatibility
     symlink /dev/block/platform/mtk-msdc.0/by-name/boot /dev/bootimg
@@ -43,6 +45,7 @@ on init
     symlink /dev/block/platform/mtk-msdc.0/by-name/para /dev/misc
     symlink /dev/block/platform/mtk-msdc.0/by-name/logo /dev/logo
     symlink /dev/block/platform/mtk-msdc.0/by-name/misc2 /dev/misc2
+
 
     mkdir /protect_f 0771 system system
     mkdir /protect_s 0771 system system
@@ -100,7 +103,9 @@ on charger
     start spm_script
     chmod 0666 /dev/kmsg
     write /sys/devices/platform/battery_meter/FG_daemon_log_level 7
-    start fuelgauged
+#ifndef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for charging    
+#    start fuelgauged
+#endif/*VENDOR_EDIT*/
     start kpoc_charger
     start servicemanager
 
@@ -112,44 +117,47 @@ on fs
     write /sys/kernel/debug/tracing/trace_marker "B|1|Mount"
     mount_all /fstab.mt6755
     exec /system/bin/tune2fs -O has_journal -u 10010 -r 4096 /dev/block/platform/mtk-msdc.0/by-name/userdata
-
+#ifdef VENDOR_EDIT//Bingshu.Zhou@Swdp.Android.Boot.Init, 2015/12/22, Modify for using chmod instead of exec system/bin/chmod
     #change partition permissions
-    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/boot
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/boot
-    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/recovery
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/recovery
-    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/secro
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/secro
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/seccfg
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/seccfg
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/proinfo
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/proinfo
-    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/otp
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/otp
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/nvram
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/nvram
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/para
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/para
-    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/logo
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/logo
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/frp
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/frp
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/ppl
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/ppl
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1img
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/md1img
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1dsp
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/md1dsp
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1arm7
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/md1arm7
-    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md3img
-    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/md3img
-    write /sys/kernel/debug/tracing/trace_marker "E"
+    chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/boot
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/boot
+    chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/recovery
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/recovery
+    chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/secro
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/secro
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/seccfg
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/seccfg
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/proinfo
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/proinfo
+    chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/otp
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/otp
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/nvram
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/nvram
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/para
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/para
+    chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/logo
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/logo
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/frp
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/frp
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/ppl
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/ppl
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1img
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/md1img
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1dsp
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/md1dsp
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md1arm7
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/md1arm7
+    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/md3img
+    chown root system /dev/block/platform/mtk-msdc.0/by-name/md3img
     write /proc/bootprof "INIT:Mount_END"
+#endif/*VENDOR_EDIT*/
 
 on fs
-
-   mount iso9660 loop@/system/etc/iAmCdRom.iso /mnt/cd-rom ro
+#ifdef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for DRIVER.ISO instead of iAmCdRom.iso   
+#   mount iso9660 loop@/system/etc/iAmCdRom.iso /mnt/cd-rom ro
+#else
+ mount iso9660 loop@/system/etc/DRIVER.ISO /mnt/cd-rom ro
+#endif 
 
 on post-fs
     write /proc/bootprof "INIT:post-fs"
@@ -224,7 +232,7 @@ on post-fs-data
 
     # dhcp server
     mkdir /data/misc/dhcp 0770 dhcp wifi
-    chown dhcp system /data/misc/dhcp
+    chown dhcp wifi /data/misc/dhcp
 
     # dhcpv6 server
     mkdir /data/misc/wide-dhcpv6 0770 dhcp wifi
@@ -355,40 +363,19 @@ on post-fs-data
     chmod 0660 /sys/class/misc/m_alsps_misc/alsdelay
     chmod 0660 /sys/class/misc/m_alsps_misc/alsbatch
     chmod 0660 /sys/class/misc/m_alsps_misc/alsflush
-
-    /*dixiaobing@wind-mobi.com 20150629 start*/
-    chmod 0660 /sys/class/misc/m_alsals_misc/alsactive
-    chmod 0660 /sys/class/misc/m_alsals_misc/alsdelay
-    chmod 0660 /sys/class/misc/m_alsals_misc/alsbatch
-    chmod 0660 /sys/class/misc/m_alsals_misc/alsflush
-    /*dixiaobing@wind-mobi.com 20150629 end*/
     chmod 0660 /sys/class/misc/m_alsps_misc/psactive
     chmod 0660 /sys/class/misc/m_alsps_misc/psdelay
     chmod 0660 /sys/class/misc/m_alsps_misc/psbatch
     chmod 0660 /sys/class/misc/m_alsps_misc/psflush
-    #dixiaobing@wind-mobi.com 20150525 start
-    chmod 0660 /sys/class/misc/m_alsps_misc/nonwakeupps
-    #dixiaobing@wind-mobi.com 20150525 end
-    
     chown system system /sys/class/misc/m_alsps_misc/alsactive
     chown system system /sys/class/misc/m_alsps_misc/alsdelay
     chown system system /sys/class/misc/m_alsps_misc/alsbatch
     chown system system /sys/class/misc/m_alsps_misc/alsflush
-    
-    /*dixiaobing@wind-mobi.com 20150629 start*/
-    chown system system /sys/class/misc/m_alsals_misc/alsactive
-    chown system system /sys/class/misc/m_alsals_misc/alsdelay
-    chown system system /sys/class/misc/m_alsals_misc/alsbatch
-    chown system system /sys/class/misc/m_alsals_misc/alsflush
-    /*dixiaobing@wind-mobi.com 20150629 end*/
     chown system system /sys/class/misc/m_alsps_misc/psactive
     chown system system /sys/class/misc/m_alsps_misc/psdelay
     chown system system /sys/class/misc/m_alsps_misc/psbatch
     chown system system /sys/class/misc/m_alsps_misc/psflush
-    #dixiaobing@wind-mobi.com 20150525 start
-    chown system system /sys/class/misc/m_alsps_misc/nonwakeupps
-    #dixiaobing@wind-mobi.com 20150525 end
- 
+
     chmod 0660 /sys/class/misc/m_baro_misc/baroenablenodata
     chmod 0660 /sys/class/misc/m_baro_misc/baroactive
     chmod 0660 /sys/class/misc/m_baro_misc/barodelay
@@ -399,21 +386,7 @@ on post-fs-data
     chown system system /sys/class/misc/m_baro_misc/barodelay
     chown system system /sys/class/misc/m_baro_misc/barobatch
     chown system system /sys/class/misc/m_baro_misc/baroflush
-     
-    #dixiaobing@wind-mobi.com 20150525 start
-    #ps cali
-    chown system system /sys/class/meizu/ps/ps_calibration
-    chown system system /sys/class/meizu/ps/ps_offset
-	
-    #acc cali
-    chown system system /sys/class/meizu/acc/acc_calibration
-    chown system system /sys/class/meizu/acc/acc_x_offset
-    chown system system /sys/class/meizu/acc/acc_y_offset
-    chown system system /sys/class/meizu/acc/acc_z_offset
-    #dixiaobing@wind-mobi.com 20150525 end
-    #xuecheng@wind-mobi.com add leds_mode 2011223 begin
-    chown system system /sys/devices/mx_leds/leds_mode
-    #xuecheng@wind-mobi.com add leds_mode 2011223 end
+
     chmod 0660 /sys/class/misc/m_step_c_misc/step_cactive
     chmod 0660 /sys/class/misc/m_step_c_misc/step_cdelay
     chmod 0660 /sys/class/misc/m_step_c_misc/step_cbatch
@@ -422,6 +395,20 @@ on post-fs-data
     chown system system /sys/class/misc/m_step_c_misc/step_cdelay
     chown system system /sys/class/misc/m_step_c_misc/step_cbatch
     chown system system /sys/class/misc/m_step_c_misc/step_cflush
+
+    chmod 0664 /sys/bus/platform/drivers/step_counter/debounce_step_num
+    chown system root /sys/bus/platform/drivers/step_counter/debounce_step_num
+
+    #ifdef VENDOR_EDIT
+    #zhihong.lu@BSP.sensor, Add for ALS SensorSelfTest
+    chown system system /sys/bus/platform/drivers/als_ps/gain_als
+    #endif
+    #ifdef VENDOR_EDIT
+    #zhihong.lu@BSP.sensor, Add for SensorSelfTest
+    chown system system /sys/bus/platform/drivers/als_ps/cali
+    chown system system /sys/bus/platform/drivers/gyroscope/cali
+    chown system system /sys/bus/platform/drivers/gyroscope/offset
+    #endif
 
     chmod 0660 /sys/class/misc/m_act_misc/actactive
     chmod 0660 /sys/class/misc/m_act_misc/actdelay
@@ -668,8 +655,8 @@ on post-fs-data
 
     # bluetooth
     mkdir /data/@btmtk 0770 bluetooth net_bt
-    chown bluetooth net_bt_stack /data/@btmtk/host_cache
-    chown bluetooth net_bt_stack /data/@btmtk/dev_cache
+    chown bluetooth bluetooth /data/@btmtk/host_cache
+    chown bluetooth bluetooth /data/@btmtk/dev_cache
     chown bluetooth bluetooth /dev/hid-keyboard
     chmod 0660 /dev/hid-keyboard
     #Use uinput's default permission
@@ -709,18 +696,9 @@ on post-fs-data
     chmod 0660 /dev/kd_camera_hw_bus2
     chmod 0660 /dev/FM50AF
     chmod 0660 /dev/DW9718AF
-	#liukun@wind-mobi.com 20151130 begin
-	chmod 0660 /dev/GT9762AF
-	chmod 0660 /dev/GT9762AVCAF
-	chmod 0660 /dev/GT9762XYAF
-	chmod 0660 /dev/GT9762CJAF
-	#liukun@wind-mobi.com 20151130 end
     chmod 0660 /dev/CAM_CAL_DRV
     chmod 0660 /dev/CAM_CAL_DRV1
     chmod 0660 /dev/CAM_CAL_DRV2
-	#liukun@wind-mobi.com 20160421 begin
-	chmod 0660 /dev/CAM_CAL_DRV3
-	#liukun@wind-mobi.com 20160421 end
 
     chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
@@ -730,27 +708,12 @@ on post-fs-data
     chown system camera /dev/kd_camera_flashlight
     chown system camera /dev/kd_camera_hw_bus2
     chown system camera /dev/FM50AF
-	#liukun@wind-mobi.com 20151130 begin
-	chown system camera /dev/GT9762AF
-	chown system camera /dev/GT9762AVCAF
-	chown system camera /dev/GT9762XYAF
-	chown system camera /dev/GT9762CJAF
-	#liukun@wind-mobi.com 20151130 end
     chown system camera /dev/DW9718AF
     chown system camera /dev/CAM_CAL_DRV
     chown system camera /dev/CAM_CAL_DRV1
     chown system camera /dev/CAM_CAL_DRV2
-	#liukun@wind-mobi.com 20160421 begin
-	chown system camera /dev/CAM_CAL_DRV3
-	#liukun@wind-mobi.com 20160421 end
 
-	chmod 0666 /sys/devices/virtual/flashtorch/flash_torch/flash1
-	chmod 0666 /sys/devices/virtual/flashtorch/flash_torch/flash2
-	
-	#liukun@wind-mobi.com 20151218 begin
-	chmod 0644 /dev/flash_torch
-        chown media system /dev/flash_torch
-	#liukun@wind-mobi.com 20151218 end
+
     #MATV
     chmod 0660 /dev/MATV
     chown system media /dev/MATV
@@ -859,11 +822,6 @@ on post-fs-data
     chown system system /proc/svp_region
     chmod 0660 /proc/svp_region
 
-	# FINGERPRINT
-	chown system system /dev/goodix_fp_spi
-	chmod 0660 /dev/goodix_fp_spi
-
-
 # End of adding by MTK drivers
 # -----------------------
 
@@ -906,7 +864,30 @@ on boot
     chown system system /sys/class/leds/red/trigger
     chown system system /sys/class/leds/green/trigger
     chown system system /sys/class/leds/blue/trigger
+#ifdef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for charging    
+	chown system system /sys/class/leds/white/trigger
+#endif /* VENDOR_EDIT */
 
+#ifdef VENDOR_EDIT
+#Fanhong.Kong@ProDrv.CHG, 2016/1/19, add for oppocustom 	
+    chmod 664 /proc/oppoCustom/Sensor 
+    chown system root /proc/oppoCustom/Sensor 
+	
+    chmod 664 /proc/oppoCustom/nPlUsbEnumEnabled 
+    chown system root /proc/oppoCustom/nPlUsbEnumEnabled 
+	
+    chmod 664 /proc/oppoCustom/nUsbAutoSwitch 
+    chown system root /proc/oppoCustom/nUsbAutoSwitch 
+    
+    chmod 664 /sys/bus/platform/drivers/gyroscope/cali 
+    chown system root /sys/bus/platform/drivers/gyroscope/cali 
+    chmod 664 /sys/bus/platform/drivers/step_counter/debounce_step_num
+    chown system root /sys/bus/platform/drivers/step_counter/debounce_step_num
+#hufeng add for camera flash calibration
+    chmod 664 /proc/oppoCustom/oppo_camera 
+    chown media root /proc/oppoCustom/oppo_camera 
+#endif	
+	
     # Permission for hibernation
     chown radio system /sys/power/tuxonice
     chown radio system /sys/power/tuxonice/do_hibernate
@@ -998,9 +979,6 @@ on boot
 # Fliper procfs
     chmod 0660 /proc/fliper
     chown system system /proc/fliper
-
-# add by yangjiajun@wind-mobi.com 2016-3-25
-    write /sys/kernel/debug/rstinfo_cnt "sys_boot"
 
 # define device for EMCSMDLOGGER
     chmod 0660 /dev/ttyGS3
@@ -1213,12 +1191,24 @@ on property:wlan.driver.status=ok
 on property:wlan.driver.status=unloaded
     write /dev/wmtWifi "0"
 
+#ifndef VENDOR_EDIT
+#Yadong.Hu@Prd.Svc.Wifi, 2015/12/31, Modify for 
+#turn off the default log of wifi
+#service p2p_supplicant /system/bin/wpa_supplicant \
+#    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+#    -I/system/etc/wifi/wpa_supplicant_overlay.conf -N \
+#    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd \
+#    -I/system/etc/wifi/p2p_supplicant_overlay.conf \
+#    -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+#
+#else
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf -N \
-    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd \
+    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf \
     -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+#endif VENDOR_EDIT
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
     #   user wifi
@@ -1228,10 +1218,20 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
+#ifndef VENDOR_EDIT
+#Yadong.Hu@Prd.Svc.Wifi, 2015/12/31, Modify for 
+#turn off the default log of wifi
+#service wpa_supplicant /system/bin/wpa_supplicant \
+#    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd \
+#    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
+#    -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+#
+#else
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin -ddd \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
     -O/data/misc/wifi/sockets -g@android:wpa_wlan0
+#endif VENDOR_EDIT
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
     #   user wifi
@@ -1384,10 +1384,13 @@ service cmmb /system/bin/cmmbsp
     group system audio camera graphics inet net_bt net_bt_admin net_bw_acct media
     ioprio rt 4
 
-service enableswap /system/bin/sh /enableswap.sh
-    class core
-    oneshot
-    seclabel u:r:enableswap:s0
+#ifdef VENDOR_EDIT
+#Jiemin.Zhu@Swdp.Android.Performance.Memory, 2016/04/28, disable zram since all phones' ram is more than 2G
+#service enableswap /system/bin/sh /enableswap.sh
+#    class core
+#    oneshot
+#    seclabel u:r:enableswap:s0
+#endif /* VENDOR_EDIT */
 
 service swapoff_action /system/bin/sh /disableswap.sh
     class main
@@ -1535,7 +1538,6 @@ service md_monitor /system/bin/md_monitor
     class main
     user system
     group system radio sdcard_rw inet sdcard_r media_rw
-
 #
 #sensor service (begin)
 #
@@ -1566,20 +1568,13 @@ service memsicd3416x /system/bin/memsicd3416x
 	 user system
     group system
     class main
-#dixiaobing@wind-mobi.com 20150710 start     
-service memsicd3524x /system/bin/memsicd3524x
+	
+service memsicd3530x /system/bin/memsicd3530x
      disabled
 	 user system
     group system
     class main
-     
-service ist8303 /system/bin/ist8303
-    disabled
-    user system
-    group system
-    class main
-#dixiaobing@wind-mobi.com 20150710 end 
-
+	
 service akmd8975 /system/bin/akmd8975
     disabled
     user system
@@ -1597,6 +1592,29 @@ service akmd09911 /system/bin/akmd09911
     user system
     group system
     class main
+
+#ifdef VENDOR_EDIT
+service psensord /system/bin/psensord
+    user system
+    group system
+    class main
+	
+#ifdef VENDOR_EDIT yixue.ge add
+service bspCriticalLog /system/bin/bspCriticalLog
+    user system
+    group system
+    class main
+#endif
+
+#zhihong.lu@BasicDrv.Sensor, add for sensor calibration
+service nvramsensord /system/bin/nvramsensord
+	user root
+	group system
+	oneshot
+	disabled
+on property:service.nvram_init=Ready
+	start nvramsensord
+#endif
 service bmm050d /system/bin/bmm050d
     disabled
     user system
@@ -1618,31 +1636,32 @@ service qmc5983d /system/bin/qmc5983d
 	 user system
     group system
     class main
-    # yudengwu@wind-mobi.com begin
-service qmcX983d /system/bin/qmcX983d
-     disabled
-	 user system
-    group system
-    class main
-	oneshot
-    # yudengwu@wind-mobi.com end
+
+#VENDOR_EDIT zhihong.lu@BSP.sensor
 service orientationd /system/bin/orientationd
     disabled
-    user system
+    user root
     group system input
-    class main
+
 service AcdApiDaemon /system/bin/AcdApiDaemon
     disabled
     user system
     group system
     class main
 
+#VENDOR_EDIT zhihong.lu@BSP.sensor
 service geomagneticd /system/bin/geomagneticd
     disabled
-    user system
+    user root
     group system input
-    class main
+	class main
 
+service yamaha537d /system/bin/yamaha537d
+    disabled
+    user root
+    group system input
+	class main
+	
 service mpud6050 /system/bin/mpud6050
     oneshot
     user system
@@ -1712,11 +1731,13 @@ service thermald /system/bin/thermald
     class main
     user system
     group system
-
-service fuelgauged /system/bin/fuelgauged
-    class main
-    user system
-    group system
+    
+#ifndef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for charging    
+#service fuelgauged /system/bin/fuelgauged
+#    class main
+#    user system
+#    group system
+#endif/*VENDOR_EDIT*/
 
 service sn /system/bin/sn
     class late_start
@@ -1732,11 +1753,14 @@ service poad /system/bin/poad
     oneshot
 
 #monitor battery status
-service batterywarning /system/bin/batterywarning
-    class main
-    user shell
-    group shell
-
+#ifndef VENDOR_EDIT
+#JianRong.Zheng@Android.Power, 2015/11/19, remove for 
+#service batterywarning /system/bin/batterywarning
+#    class main
+#    user shell
+#    group shell
+#endif
+	
 service backuprestore /system/bin/br_app_data_service
 	class main
 	socket backuprestore stream 0660 root sdcard_rw
@@ -1869,9 +1893,42 @@ on property:ro.build.type=eng
     write /proc/hps/up_threshold 60
     write /proc/hps/down_threshold 30
 
-# fingerprint service
-service fpDaemon /system/bin/gxFpDaemon
-    user system
-    group system
-    class main
+#ifndef VENDOR_EDIT
+#JianRong.Zheng@Swdp.Android.EngineeringMode, 2014/11/25, Add for 
+on property:sys.engineermode.chargeswitch=true
+    write /sys/class/power_supply/battery/mmi_charging_enable 1
+
+on property:sys.engineermode.chargeswitch=false
+    write /sys/class/power_supply/battery/mmi_charging_enable 0 
+    
+on property:debug.MB.running=1
+    setprop persist.sys.assert.panic true
+
+on property:debug.MB.running=0
+    setprop persist.sys.assert.panic false    
+	
+service engineermode-sh /system/bin/sh /init.oppo.engineermode.sh
+    class late_start
+	user root
+    oneshot    
+#endif /* VENDOR_EDIT */
+
+#ifdef VENDOR_EDIT
+#Bingshu.Zhou@Swdp.Android.Boot.Init, 2015/12/22, Modify for disable fix cpu core and freq
+#disable fix cpu core and freq
+on property:service.bootanim.exit=1
+    write /proc/ppm/policy/ut_fix_core_num "-1 -1"
+    write /proc/ppm/policy/ut_fix_freq_idx "-1 -1"
+#endif /* VENDOR_EDIT */
+
+#ifdef VENDOR_EDIT
+#xiaocheng.li@Swdp.Shanghai, 2016/1/25, Add hypnus service
+service hypnus_context /system/bin/sh /system/etc/init.oppo.hypnus.sh
+    user root
+    disabled
     oneshot
+
+on property:sys.enable.hypnus=*
+    start hypnus_context
+#endif
+
