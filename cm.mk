@@ -11,7 +11,7 @@ $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 $(call inherit-product, device/meizu/m3s/device_m3s.mk)
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := M3s
+PRODUCT_DEVICE := m3s
 PRODUCT_NAME := cm_m3s
 PRODUCT_BRAND := Meizu
 PRODUCT_MODEL := M3s
