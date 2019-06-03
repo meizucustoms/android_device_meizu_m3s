@@ -615,3 +615,5 @@ vendor/lib/mediadrm/libwvdrmengine.so
 xbin/BGW
 xbin/mnld
 xbin/MPED
+lib/libmemtrack.so
+lib64/libmemtrack.so
