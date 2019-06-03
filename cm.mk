@@ -2,25 +2,27 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Release name
-PRODUCT_RELEASE_NAME := M3s
+PRODUCT_RELEASE_NAME := A37
 
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
 # Inherit device configuration
-$(call inherit-product, device/meizu/m3s/device_m3s.mk)
+$(call inherit-product, device/oppo/A37/device_A37.mk)
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := M3s
-PRODUCT_NAME := cm_m3s
-PRODUCT_BRAND := Meizu
-PRODUCT_MODEL := M3s
-PRODUCT_MANUFACTURER := Meizu
+PRODUCT_DEVICE := A37
+PRODUCT_NAME := cm_A37
+PRODUCT_BRAND := OPPO		
+PRODUCT_MODEL := A37
+PRODUCT_MANUFACTURER := OPPO
 
-PRODUCT_GMS_CLIENTID_BASE := android-m3s
+
+
+PRODUCT_GMS_CLIENTID_BASE := android-oppo
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=M3s \
-    BUILD_PRODUCT=mt6755 \
-    TARGET_DEVICE=M3s
+    PRODUCT_NAME=A37 \
+    BUILD_PRODUCT=oppo6750_15127 \
+    TARGET_DEVICE=A37
 

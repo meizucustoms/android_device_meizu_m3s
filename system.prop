@@ -1,6 +1,6 @@
 
 #
-# system.prop for M3s
+# system.prop for A37m
 #
 
 rild.libpath=mtk-ril.so
