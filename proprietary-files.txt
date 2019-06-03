@@ -80,7 +80,6 @@ bin/wifi2agps
 bin/wmt_loader
 bin/xlog
 etc/agps_profiles_conf2.xml
-etc/audio_device.xml
 etc/audio_param/AudioParamOptions.xml
 etc/audio_param/PlaybackACF_AudioParam.xml
 etc/audio_param/PlaybackACF_ParamUnitDesc.xml
@@ -599,10 +598,6 @@ lib/libwebrtc_audio_preprocessing.so
 lib/mtk-rilmd2.so
 lib/mtk-ril.so
 lib/ssl/engines/libkeystore.so
-usr/keylayout/ACCDET.kl
-usr/keylayout/AW9201_ts.kl
-usr/keylayout/mtk-kpd.kl
-usr/keylayout/mtk-tpd.kl
 vendor/lib/drm/libdrmwvmplugin.so
 vendor/lib/hw/audio.a2dp.blueangel.so
 vendor/lib/hw/bluetooth.blueangel.so

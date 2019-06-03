@@ -2,7 +2,7 @@ echo $1
 rootdirectory="$PWD"
 # ---------------------------------
 
-dirs="frameworks/base frameworks/opt/telephony hardware/libhardware packages/services/Telephony system/netd"
+dirs="frameworks/base frameworks/opt/telephony hardware/libhardware packages/services/Telephony system/netd external/bluetooth/bluedroid"
 
 for dir in $dirs ; do
 	cd $rootdirectory
