@@ -2,7 +2,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Release name
-PRODUCT_RELEASE_NAME := M3s,m3s,meilan3
+PRODUCT_RELEASE_NAME := M3s
 
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
@@ -22,5 +22,5 @@ PRODUCT_GMS_CLIENTID_BASE := android-meizu
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=M3s \
     BUILD_PRODUCT=mt6750 \
-    TARGET_DEVICE=M3s
+    TARGET_DEVICE=M3s,m3s,meilan3
 
