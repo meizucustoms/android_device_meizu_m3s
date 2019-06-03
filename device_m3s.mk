@@ -10,6 +10,8 @@ DEVICE_PACKAGE_OVERLAYS += device/meizu/m3s/overlay
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
+TARGET_OTA_ASSERT_DEVICE := m3s,meilan3,meizu_m3_mini,m3
+
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 	LOCAL_KERNEL := device/meizu/m3s/kernel
 else
