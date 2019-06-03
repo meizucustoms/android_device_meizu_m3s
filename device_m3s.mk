@@ -28,10 +28,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/keylayout/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl \
      $(LOCAL_PATH)/keylayout/ACCDET.kl:system/usr/keylayout/ACCDET.kl \
-     $(LOCAL_PATH)/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl
+     $(LOCAL_PATH)/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
+    $(LOCAL_PATH)/keylayout/AW9201_ts.kl:system/usr/keylayout/AW9201_ts.kl
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
@@ -107,22 +108,9 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     audio.r_submix.default \
     audio_policy.default \
-    libaudiopolicymanagerdefault \
     libaudio-resampler \
-    libaudiosetting \
-    libtinyalsa \
     libtinycompress \
-    libtinymix \
     libtinyxml
-
-# Radio dependencies
-PRODUCT_PACKAGES += \
-    muxreport \
-    terservice
-
-# Power
-PRODUCT_PACKAGES += \
-    power.mt6750
 
 PRODUCT_PACKAGES += \
     libcurl
@@ -149,11 +137,15 @@ PRODUCT_PACKAGES += \
     libbt-vendor
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.otg_support=true \
     ro.mount.fs=EXT4 \
     persist.service.acm.enable=0 \
     camera.disable_zsl_mode=1 \
-    persist.sys.usb.config=mtp
+
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.allow.mock.location=1 \
+    ro.debuggable=1 \
+    ro.adb.secure=0
 
 # Telecom
 PRODUCT_COPY_FILES += \
@@ -191,12 +183,6 @@ PRODUCT_PACKAGES += \
     com.cyanogenmod.keyhandler
 
 PRODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
-
-ADDITIONAL_DEFAULT_PROPERTIES += \
-    ro.secure=0 \
-    ro.allow.mock.location=1 \
-    ro.debuggable=1 \
-    ro.adb.secure=0
 
 # never dexopt the keyhandler
 $(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
