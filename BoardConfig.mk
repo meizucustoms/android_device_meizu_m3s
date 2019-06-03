@@ -1,9 +1,9 @@
 USE_CAMERA_STUB := true
 
 # inherit from the proprietary version
--include vendor/oppo/A37/BoardConfigVendor.mk
+-include vendor/meizu/m3s/BoardConfigVendor.mk
 
-LOCAL_PATH := device/oppo/A37
+LOCAL_PATH := device/meizu/m3s
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
 # Platform
@@ -29,9 +29,7 @@ TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := full_oppo6750_15127
-
-
+TARGET_BOOTLOADER_BOARD_NAME := mt6755
 
 # CM Hardware
 BOARD_USES_CYANOGEN_HARDWARE := true
@@ -92,7 +90,7 @@ WIFI_DRIVER_FW_PATH_P2P:=P2P
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_MTK := true
 BOARD_BLUETOOTH_DOES_NOT_USE_RFKILL := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/oppo/A37/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # fix this up by examining /proc/mtd on a running device
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
@@ -114,9 +112,9 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/soc.4/11270000.usb3/musb-hdrc/ga
 
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_RECOVERY_FSTAB := device/oppo/A37/rootdir/etc/fstab.mt6755
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.mt6755
 
-#TARGET_RECOVERY_FSTAB := device/oppo/A37m/twrp.fstab
+#TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/twrp.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -128,7 +126,6 @@ TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone1/temp
 #TW_NO_USB_STORAGE := true
 TW_INCLUDE_JB_CRYPTO := true
 #TW_EXTRA_LANGUAGES := true
-TW_DEFAULT_LANGUAGE := zh_CN
 TW_BRIGHTNESS_PATH := /sys/devices/platform/leds-mt65xx/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
 

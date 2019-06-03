@@ -217,7 +217,7 @@ lib64/hw/hwcomposer.mt6750.so
 lib64/hw/keystore.mt6750.so
 lib64/hw/lights.default.so
 lib64/hw/memtrack.mt6750.so
-lib64/hw/oppo_keystore.mt6750.so
+lib64/hw/keystore.mt6750.so
 lib64/hw/sensors.mt6750.so
 lib64/lib3a_sample.so
 lib64/lib3a.so
@@ -416,7 +416,7 @@ lib/hw/hwcomposer.mt6750.so
 lib/hw/keystore.mt6750.so
 lib/hw/lights.default.so
 lib/hw/memtrack.mt6750.so
-lib/hw/oppo_keystore.mt6750.so
+lib/hw/keystore.mt6750.so
 lib/hw/sensors.mt6750.so
 lib/lib3a_sample.so
 lib/lib3a.so

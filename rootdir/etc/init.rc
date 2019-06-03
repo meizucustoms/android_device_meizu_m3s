@@ -9,9 +9,6 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
-# Include CM's extra init file
-import /init.cm.rc
-
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -63,7 +60,6 @@ loglevel 6 ####
     write /sys/fs/cgroup/memory/sw/memory.move_charge_at_immigrate 1
     chown root system /sys/fs/cgroup/memory/sw/tasks
     chmod 0660 /sys/fs/cgroup/memory/sw/tasks
-    chmod 0220 /sys/fs/cgroup/memory/cgroup.event_control
 
     mkdir /system
     mkdir /data 0771 system system
@@ -98,7 +94,7 @@ loglevel 6 ####
     mount cgroup none /dev/memcg memory
 
     write /proc/sys/kernel/panic_on_oops 1
-    write /proc/sys/kernel/hung_task_timeout_secs 60
+    write /proc/sys/kernel/hung_task_timeout_secs 0
     write /proc/cpu/alignment 4
     write /proc/sys/kernel/sched_latency_ns 10000000
     write /proc/sys/kernel/sched_wakeup_granularity_ns 2000000
@@ -158,32 +154,6 @@ loglevel 6 ####
 
 	# ion device
 	chmod 0666 /dev/ion
-#ifdef VENDOR_EDIT
-#Runsheng.Pei@Swdp.Android.OppoFeature.UsageRecord, 2014/07/30, add provide a function to indentify the usage of the phone.
-#recommend set in the stage of "on post-fs"
-    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/reserve4
-    chown root system /dev/block/platform/mtk-msdc.0/by-name/reserve4
-    chmod 0660 /dev/block/mmcblk0p6
-    chown root system /dev/block/mmcblk0p6
-#endif /* VENDOR_EDIT */
-
-#ifdef VENDOR_EDIT
-#Jiwei.Wang@Swdp.Android.OppoDebug.CriticalLog,2015/11/19, add for critical log
-    chmod 0660 /dev/block/mmcblk0p4
-    chown system system /dev/block/mmcblk0p4
-#endif
-
-#ifdef VENDOR_EDIT /* LiuPing@Phone.BSP.Sensor, 2015/12/12, add for homekey. */
-    chmod 0666 /dev/mtk-kpd
-    chown root system /dev/mtk-kpd
-#endif /*VENDOR_EDIT*/
-
-#ifdef VENDOR_EDIT
-# gyx@bsp.drv add for tp 
-    chown system system /proc/touchpanel/oppo_tp_limit_enable
-	chown system system /proc/touchpanel/oppo_tp_limit_area
-#endif
-
 
 # Healthd can trigger a full boot from charger mode by signaling this
 # property when the power button is held.
@@ -284,7 +254,6 @@ on post-fs-data
     # create basic filesystem structure
     mkdir /data/misc 01771 system misc
     mkdir /data/misc/adb 02750 system shell
-    mkdir /data/misc/audit 02750 audit system
     mkdir /data/misc/bluedroid 0770 bluetooth net_bt_stack
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
@@ -332,7 +301,8 @@ on post-fs-data
 
     # create directory for DRM plug-ins - give drm the read/write access to
     # the following directory.
-    mkdir /data/drm 0770 drm drm
+    mkdir /data/drm 0770 drm drm ####
+    # mkdir /data/drm 0774 drm system ####
 
     # create directory for MediaDrm plug-ins - give drm the read/write access to
     # the following directory.
@@ -355,15 +325,21 @@ on post-fs-data
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /data
-    restorecon /data/data
-    restorecon /data/user
-    restorecon /data/user/0
 
     # If there is no fs-post-data action in the init.<device>.rc file, you
     # must uncomment this line, otherwise encrypted filesystems
     # won't work.
     # Set indication (checked by vold) that we have finished this action
     #setprop vold.post_fs_data_done 1
+
+    # Flyme kuangqianbo for samba server and client {@
+    mkdir /data/misc/samba 0775 system system
+    mkdir /data/misc/samba/remote 0775 system system
+    mkdir /data/misc/samba/lib 0775 system system
+    mkdir /data/misc/samba/private 0775 system system
+    mkdir /data/misc/samba/tmp 0775 system system
+    mkdir /data/misc/samba/var 0775 system system
+    # @}
 
 on boot
     # basic network init
@@ -374,14 +350,6 @@ on boot
     # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
 
-    # ifdef VENDOR_EDIT //Wanghao@phone.bsp 2015-09-22 add for tp firmware update 
-    # update touchpanel firmware
-	write /proc/touchpanel/oppo_tp_fw_update 0
-	chown system system /proc/touchpanel/oppo_tp_fw_update
-	write /proc/touchkey/oppo_tp_fw_update 0
-	chown system system /proc/touchkey/oppo_tp_fw_update
-    # endif //VENDOR_EDIT
-    
     # Memory management.  Basic kernel parameters, and allow the high
     # level system server to be able to adjust the kernel OOM driver
     # parameters to match how it is managing things.
@@ -395,6 +363,9 @@ on boot
     # Tweak background writeout
     write /proc/sys/vm/dirty_expire_centisecs 200
     write /proc/sys/vm/dirty_background_ratio  5
+
+    # Flyme Customized: Swap page out level: swappiness
+    write /proc/sys/vm/swappiness 65
 
     # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state
@@ -442,21 +413,11 @@ on boot
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/class/leds/keyboard-backlight/brightness
     chown system system /sys/class/leds/lcd-backlight/brightness
-#ifdef VENDOR_EDIT
-# liping-m@PhoneSW.Multimedia, 2015/12/23  Add for LCD HBM mode
-	chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/silence
-    chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_HBM
-    chmod 0664 /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_HBM
-	chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_CABC
-#endif /*VENDOR_EDIT*/
     chown system system /sys/class/leds/button-backlight/brightness
     chown system system /sys/class/leds/jogball-backlight/brightness
     chown system system /sys/class/leds/red/brightness
     chown system system /sys/class/leds/green/brightness
     chown system system /sys/class/leds/blue/brightness
-#ifdef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for charging  
-    chown system system /sys/class/leds/white/brightness
-#endif /* VENDOR_EDIT */	
     chown system system /sys/class/leds/red/device/grpfreq
     chown system system /sys/class/leds/red/device/grppwm
     chown system system /sys/class/leds/red/device/blink
@@ -472,6 +433,8 @@ on boot
 
     # Define default initial receive window size in segments.
     setprop net.tcp.default_init_rwnd 60
+	
+	chmod 0440 /dev/block/mmcblk0boot0
 
     class_start core
 
@@ -548,14 +511,9 @@ service healthd /sbin/healthd
 service console /system/bin/sh
     class core
     console
-    disabled
-    user shell
-    group shell log
+    #disabled
+    #user shell
     seclabel u:r:shell:s0
-
-service auditd /system/bin/auditd -k
-    seclabel u:r:logd:s0
-    class main
 
 on property:ro.debuggable=1
     start console
@@ -566,15 +524,6 @@ service adbd /sbin/adbd --root_seclabel=u:r:su:s0
     socket adbd stream 660 system system
     disabled
     seclabel u:r:adbd:s0
-
-
-#ifdef VENDOR_EDIT
-#Geliang.Tang@Swdp.Android.OppoFeature.UsageRecord, 2014/08/18, add provide a function to indentify the usage of the phone.
-service block-mode /system/bin/sh /init.oppo.block.sh
-    class core
-    user root
-    oneshot
-#endif /* VENDOR_EDIT */
 
 # adbd on at boot in emulator
 on property:ro.kernel.qemu=1
@@ -595,7 +544,42 @@ service servicemanager /system/bin/servicemanager
     onrestart restart media
     onrestart restart surfaceflinger
     onrestart restart drm
-    onrestart restart criticallog
+
+# Flyme kuangqianbo add forwifi share
+service smbd /system/bin/smbd -D
+    user root
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service nmbd /system/bin/nmbd -D
+    user root
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+# Flyme wifi share end
+
+# FLYME:zhujianjian@Feature {@
+on post-fs-data
+    # For pppoe
+    mkdir /data/pppoe 0770
+    chown root system /data/pppoe
+
+#pppoe
+service pppd_pppoe /system/bin/sh /system/etc/ppp/init.pppoe-pppd
+    user root
+    group radio cache inet misc
+    oneshot
+    disabled
+
+on property:net.pppoe=start
+    start pppd_pppoe
+
+on property:net.pppoe=stop
+    stop pppd_pppoe
+#pppoe end
+# @}
 
 service vold /system/bin/vold
     class core
@@ -609,19 +593,24 @@ service netd /system/bin/netd
     socket mdns stream 0660 root system
     socket fwmarkd stream 0660 root inet
 
+# Flyme kuangqianbo add for meizu own daemon { @
+service flymed /system/bin/flymed
+    class main
+    socket flymed stream 0660 root system
+# @ }
+
 service debuggerd /system/bin/debuggerd
     class main
 
 service debuggerd64 /system/bin/debuggerd64
     class main
 
-# for using TK init.modem.rc rild-daemon setting
-#service ril-daemon /system/bin/rild
-#    class main
-#    socket rild stream 660 root radio
-#    socket rild-debug stream 660 radio system
-#    user root
-#    group radio cache inet misc audio log
+service ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 radio system
+    user root
+    group radio cache inet misc audio log
 
 service surfaceflinger /system/bin/surfaceflinger
     class core
@@ -665,7 +654,8 @@ service encrypt /system/bin/vdc --wait cryptfs enablecrypto inplace default
 service bootanim /system/bin/bootanimation
     class core
     user graphics
-    group graphics audio
+#    group graphics audio ####
+    group graphics media audio cache  ####
     disabled
     oneshot
 
@@ -677,11 +667,6 @@ service flash_recovery /system/bin/install-recovery.sh
     class main
     seclabel u:r:install_recovery:s0
     oneshot
-    disabled
-
-# update recovery if enabled
-on property:persist.sys.recovery_update=true
-    start flash_recovery
 
 service racoon /system/bin/racoon
     class main
@@ -723,8 +708,38 @@ service pre-recovery /system/bin/uncrypt
     disabled
     oneshot
 
-#Jian.Wang@Swdp.Android.Fingerprint.Wechatpay, 2015/11/24, porting from android M
-service fingerprintd /system/bin/fingerprintd
-    class late_start
-    user system
-    group system
+# FLYME:mingguilai@Feature.Netdiagn {@
+on post-fs-data
+    # netdiagn socket server and client
+    mkdir /data/misc/vbus 0750 system system
+    mkdir /data/misc/vbus/sockets 0750 system system
+
+service netdiagn /system/bin/netdiagn -p/data/misc/vbus -ibus0
+    class main
+    socket netdiagn dgram 0660 system system
+    disabled
+    oneshot
+
+# FLYEME:mingguilai@wlan.feature for network realtime diagnosis {@
+on init
+    chown root system /dev/netdiagn
+    chmod 0660 /dev/netdiagn
+    chown -R root system /sys/class/rtnetds_cls/netdiagn
+    chown root system /sys/class/rtnetds_cls/netdiagn/clrum
+    chown root system /sys/class/rtnetds_cls/netdiagn/fhync
+    chown root system /sys/class/rtnetds_cls/netdiagn/mem
+    chown root system /sys/class/rtnetds_cls/netdiagn/wrxts
+    chown root system /sys/class/rtnetds_cls/netdiagn/mrxts
+    chown root system /sys/class/rtnetds_cls/netdiagn/notify
+    chown root system /sys/class/rtnetds_cls/netdiagn/params
+# @}
+
+# mingguilai@telecom UrlRecord {@
+on init
+    chmod 0662 /dev/rtup
+    chown system system /dev/rtup
+    chown system shell /sys/class/rtup/rtup/stat
+    chown root system /sys/class/rtup/rtup/params
+    chown system system /sys/class/rtup/rtup/entry
+    chown system system /sys/class/rtup/rtup/key
+# @}

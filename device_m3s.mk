@@ -3,15 +3,15 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-$(call inherit-product-if-exists, vendor/oppo/A37/A37-vendor.mk)
+$(call inherit-product-if-exists, vendor/meizu/m3s/m3s-vendor.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/oppo/A37/overlay
+DEVICE_PACKAGE_OVERLAYS += device/meizu/m3s/overlay
 
 PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-	LOCAL_KERNEL := device/oppo/A37/kernel
+	LOCAL_KERNEL := device/meizu/m3s/kernel
 else
 	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -55,9 +55,7 @@ PRODUCT_PACKAGES += \
     meta_init.modem.rc \
     meta_init.project.rc \
     meta_init.rc \
-    mos_init.project.rc \
-    mos_init.rc \
-    ueventd.mt6755.rc
+    ueventd.rc
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -131,7 +129,7 @@ PRODUCT_PACKAGES += \
     libbt-vendor
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.oppo.otg_support=true \
+    persist.sys.otg_support=true \
     ro.mount.fs=EXT4 \
     persist.service.acm.enable=0 \
     camera.disable_zsl_mode=1 \
@@ -160,7 +158,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     charger \
     charger_res_images
-
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -191,5 +188,5 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui
 $(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_NAME := full_A37
-PRODUCT_DEVICE := A37
+PRODUCT_NAME := full_m3s
+PRODUCT_DEVICE := M3s

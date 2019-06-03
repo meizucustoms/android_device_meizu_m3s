@@ -1,1 +1,1 @@
-# OPPO A37 (MT6750) CyanogenMod Device Tree
+# Meizu M3s (MT6750) CyanogenMod Device Tree

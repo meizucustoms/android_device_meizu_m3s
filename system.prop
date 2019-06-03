@@ -1,6 +1,6 @@
 
 #
-# system.prop for A37m
+# system.prop for M3s
 #
 
 rild.libpath=mtk-ril.so
@@ -125,7 +125,7 @@ ril.radiooff.poweroffMD=0
 ro.frp.pst=/dev/block/platform/mtk-msdc.0/by-name/frp
 ro.mediatek.version.branch=L1.MP10.TC16SP
 ro.mediatek.version.sdk=4
-ro.com.google.clientidbase=android-oppo
+ro.com.google.clientidbase=android-meizu
 ro.operator.optr=OP_TD
 ro.mtk_gemini_support=1
 ro.mtk_audenh_support=1
@@ -220,7 +220,7 @@ ro.mtk_volte_support=1
 ro.mtk_nfc_gsma_support=1
 ro.nfc.port=I2C
 wfd.dummy.enable=1
-ro.mediatek.project.path=device/oppo/oppo6750_15127
+ro.mediatek.project.path=device/meizu/m3s
 ro.mtk_trustonic_tee_support=1
 persist.mtk.wcn.combo.chipid=-1
 persist.mtk.wcn.fwlog.status=no

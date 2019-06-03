@@ -375,9 +375,6 @@ service logd /system/bin/logd
     socket logdw dgram 0222 logd logd
     seclabel u:r:logd:s0
 
-service fuelgauged /system/bin/fuelgauged
-    class main
-
 service console /system/bin/sh
     class core
     console
@@ -389,6 +386,8 @@ service console /system/bin/sh
 on property:ro.debuggable=1
     start console
 
+service fuelgauged /system/bin/fuelgauged
+    class main
 
 service thermal_manager /system/bin/thermal_manager   /etc/.tp/.thermal_meta.conf
     class main
@@ -440,8 +439,9 @@ service mobile_log_d /system/bin/mobile_log_d
     class main
 
 #mass_storage,adb,acm
+#modify by yangjiajun@wind-mobi.com 2016-6-7
 on property:ro.boot.usbconfig=0
-    write /sys/class/android_usb/android0/iSerial $ro.serialno
+    write /sys/class/android_usb/android0/iSerial " "
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 0e8d
     write /sys/class/android_usb/android0/idProduct 2006
@@ -454,13 +454,8 @@ on property:ro.boot.usbconfig=0
 on property:ro.boot.usbconfig=1
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/iSerial " "
-#ifndef VENDOR_EDIT //Nanwei.Deng@BasicDrv.USB, 2012/07/10, Modify for customizing VID&PID
-#   write /sys/class/android_usb/android0/idVendor 0e8d
-#   write /sys/class/android_usb/android0/idProduct 2007
-#else/* VENDOR_EDIT */
-    write /sys/class/android_usb/android0/idVendor 22D9
-    write /sys/class/android_usb/android0/idProduct 0006
-#endif/* VENDOR_EDIT */  
+    write /sys/class/android_usb/android0/idVendor 0e8d
+    write /sys/class/android_usb/android0/idProduct 2007
     write /sys/class/android_usb/android0/f_acm/instances 1
     write /sys/class/android_usb/android0/functions acm
     write /sys/class/android_usb/android0/bDeviceClass 02
