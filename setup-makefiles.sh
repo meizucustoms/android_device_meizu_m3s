@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VENDOR=meizu
-DEVICE=m3s
+DEVICE=m3
 OUTDIR=vendor/$VENDOR/$DEVICE
 MAKEFILE=../../../$OUTDIR/$DEVICE-vendor-blobs.mk
 

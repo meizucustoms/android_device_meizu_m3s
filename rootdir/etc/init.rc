@@ -98,7 +98,7 @@ loglevel 6 ####
     mount cgroup none /dev/memcg memory
 
     write /proc/sys/kernel/panic_on_oops 1
-    write /proc/sys/kernel/hung_task_timeout_secs 60
+    write /proc/sys/kernel/hung_task_timeout_secs 0
     write /proc/cpu/alignment 4
     write /proc/sys/kernel/sched_latency_ns 10000000
     write /proc/sys/kernel/sched_wakeup_granularity_ns 2000000
@@ -158,32 +158,6 @@ loglevel 6 ####
 
 	# ion device
 	chmod 0666 /dev/ion
-#ifdef VENDOR_EDIT
-#Runsheng.Pei@Swdp.Android.OppoFeature.UsageRecord, 2014/07/30, add provide a function to indentify the usage of the phone.
-#recommend set in the stage of "on post-fs"
-    chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/reserve4
-    chown root system /dev/block/platform/mtk-msdc.0/by-name/reserve4
-    chmod 0660 /dev/block/mmcblk0p6
-    chown root system /dev/block/mmcblk0p6
-#endif /* VENDOR_EDIT */
-
-#ifdef VENDOR_EDIT
-#Jiwei.Wang@Swdp.Android.OppoDebug.CriticalLog,2015/11/19, add for critical log
-    chmod 0660 /dev/block/mmcblk0p4
-    chown system system /dev/block/mmcblk0p4
-#endif
-
-#ifdef VENDOR_EDIT /* LiuPing@Phone.BSP.Sensor, 2015/12/12, add for homekey. */
-    chmod 0666 /dev/mtk-kpd
-    chown root system /dev/mtk-kpd
-#endif /*VENDOR_EDIT*/
-
-#ifdef VENDOR_EDIT
-# gyx@bsp.drv add for tp 
-    chown system system /proc/touchpanel/oppo_tp_limit_enable
-	chown system system /proc/touchpanel/oppo_tp_limit_area
-#endif
-
 
 # Healthd can trigger a full boot from charger mode by signaling this
 # property when the power button is held.
@@ -374,14 +348,6 @@ on boot
     # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
 
-    # ifdef VENDOR_EDIT //Wanghao@phone.bsp 2015-09-22 add for tp firmware update 
-    # update touchpanel firmware
-	write /proc/touchpanel/oppo_tp_fw_update 0
-	chown system system /proc/touchpanel/oppo_tp_fw_update
-	write /proc/touchkey/oppo_tp_fw_update 0
-	chown system system /proc/touchkey/oppo_tp_fw_update
-    # endif //VENDOR_EDIT
-    
     # Memory management.  Basic kernel parameters, and allow the high
     # level system server to be able to adjust the kernel OOM driver
     # parameters to match how it is managing things.
@@ -442,21 +408,11 @@ on boot
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/class/leds/keyboard-backlight/brightness
     chown system system /sys/class/leds/lcd-backlight/brightness
-#ifdef VENDOR_EDIT
-# liping-m@PhoneSW.Multimedia, 2015/12/23  Add for LCD HBM mode
-	chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/silence
-    chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_HBM
-    chmod 0664 /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_HBM
-	chown system system /sys/devices/virtual/mtk_disp_mgr/mtk_disp_mgr/LCM_CABC
-#endif /*VENDOR_EDIT*/
     chown system system /sys/class/leds/button-backlight/brightness
     chown system system /sys/class/leds/jogball-backlight/brightness
     chown system system /sys/class/leds/red/brightness
     chown system system /sys/class/leds/green/brightness
     chown system system /sys/class/leds/blue/brightness
-#ifdef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,modified 2015.9.30 for charging  
-    chown system system /sys/class/leds/white/brightness
-#endif /* VENDOR_EDIT */	
     chown system system /sys/class/leds/red/device/grpfreq
     chown system system /sys/class/leds/red/device/grppwm
     chown system system /sys/class/leds/red/device/blink
@@ -567,15 +523,6 @@ service adbd /sbin/adbd --root_seclabel=u:r:su:s0
     disabled
     seclabel u:r:adbd:s0
 
-
-#ifdef VENDOR_EDIT
-#Geliang.Tang@Swdp.Android.OppoFeature.UsageRecord, 2014/08/18, add provide a function to indentify the usage of the phone.
-service block-mode /system/bin/sh /init.oppo.block.sh
-    class core
-    user root
-    oneshot
-#endif /* VENDOR_EDIT */
-
 # adbd on at boot in emulator
 on property:ro.kernel.qemu=1
     start adbd
@@ -595,7 +542,6 @@ service servicemanager /system/bin/servicemanager
     onrestart restart media
     onrestart restart surfaceflinger
     onrestart restart drm
-    onrestart restart criticallog
 
 service vold /system/bin/vold
     class core
@@ -679,10 +625,6 @@ service flash_recovery /system/bin/install-recovery.sh
     oneshot
     disabled
 
-# update recovery if enabled
-on property:persist.sys.recovery_update=true
-    start flash_recovery
-
 service racoon /system/bin/racoon
     class main
     socket racoon stream 600 system system
@@ -723,8 +665,3 @@ service pre-recovery /system/bin/uncrypt
     disabled
     oneshot
 
-#Jian.Wang@Swdp.Android.Fingerprint.Wechatpay, 2015/11/24, porting from android M
-service fingerprintd /system/bin/fingerprintd
-    class late_start
-    user system
-    group system

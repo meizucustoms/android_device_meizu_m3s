@@ -2,13 +2,13 @@ echo $1
 rootdirectory="$PWD"
 # ---------------------------------
 
-dirs="frameworks/base frameworks/opt/telephony hardware/libhardware packages/services/Telephony system/netd external/bluetooth/bluedroid"
+dirs="frameworks/base frameworks/opt/telephony hardware/libhardware packages/services/Telephony system/netd"
 
 for dir in $dirs ; do
 	cd $rootdirectory
 	cd $dir
 	echo "Reverting $dir patches..."
-	git apply --reverse $rootdirectory/device/meizu/m3s/patches/$dir/*.patch
+	git apply --reverse $rootdirectory/device/meizu/m3/patches/$dir/*.patch
 	echo " "
 done
 
