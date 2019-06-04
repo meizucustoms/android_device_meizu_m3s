@@ -7,8 +7,8 @@ $(call inherit-product-if-exists, vendor/meizu/m3s/m3s-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/meizu/m3s/overlay
 
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := hdpi
+PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
+PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 	LOCAL_KERNEL := device/meizu/m3s/kernel
@@ -178,16 +178,20 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     resize2fs \
     setup_fs
-    
-# Keyhandler
-#PRODUCT_PACKAGES += \
-#    ConfigPanel \
-#    com.cyanogenmod.keyhandler
 
-#PRODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
+# Keyhandler
+PRODUCT_PACKAGES += \
+    ConfigPanel \
+    com.cyanogenmod.keyhandler
+
+PRODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
 
 # never dexopt the keyhandler
-#$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
+$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
+
+# Enable soft buttons
+PRODUCT_PROPERTY_OVERRIDES += \
+    qemu.hw.mainkeys=0
 
 # call dalvik heap config
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
