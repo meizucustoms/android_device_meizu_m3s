@@ -7,7 +7,7 @@ $(call inherit-product-if-exists, vendor/meizu/m3s/m3s-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/meizu/m3s/overlay
 
-PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 TARGET_OTA_ASSERT_DEVICE := m3s,meilan3,meizu_m3_mini,m3
@@ -157,6 +157,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     ro.telephony.ril_class=MediaTekRIL
+
+# Screen buttons
+PRODUCT_PROPERTY_OVERRIDES += \
+    qemu.hw.mainkeys=0
 
 PRODUCT_PACKAGES += \
     librs_jni \
