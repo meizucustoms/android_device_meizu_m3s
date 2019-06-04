@@ -3,20 +3,20 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-$(call inherit-product-if-exists, vendor/meizu/m3/m3-vendor.mk)
+$(call inherit-product-if-exists, vendor/meizu/m3s/m3s-vendor.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/meizu/m3/overlay
+DEVICE_PACKAGE_OVERLAYS += device/meizu/m3s/overlay
 
 PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-	LOCAL_KERNEL := device/meizu/m3/kernel
+	LOCAL_KERNEL := device/meizu/m3s/kernel
 else
 	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 
-TARGET_OTA_ASSERT_DEVICE := m3,m3s
+TARGET_OTA_ASSERT_DEVICE := m3s,m3
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
@@ -153,8 +153,8 @@ PRODUCT_COPY_FILES += \
 #    frameworks/native/data/etc/cyanogenmod.hardware.fingerprint.xml:system/etc/permissions/cyanogenmod.hardware.fingerprint.xml
 
 # BT A2DP
-PRODUCT_COPY_FILES += \
-    vendor/meizu/m3/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.mt6750.so
+#PRODUCT_COPY_FILES += \
+#    vendor/meizu/m3s/proprietary/vendor/lib/hw/audio.a2dp.blueangel.so:system/vendor/lib/hw/audio.a2dp.mt6750.so
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
@@ -198,5 +198,5 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui
 $(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_NAME := full_m3
-PRODUCT_DEVICE := m3
+PRODUCT_NAME := full_m3s
+PRODUCT_DEVICE := m3s

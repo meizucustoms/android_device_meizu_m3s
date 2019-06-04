@@ -7,7 +7,7 @@
 ## $2 specifies the folder where system image is mounted or zip file to extract from (default = ../../../${DEVICE}_update.zip)
 
 VENDOR=meizu
-DEVICE=m3
+DEVICE=m3s
 
 BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
 rm -rf $BASE/*
