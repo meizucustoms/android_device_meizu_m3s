@@ -142,11 +142,19 @@ ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0 \
 	ro.adb.secure=0
 
 # Telecom
-#    $(LOCAL_PATH)/configs/cdma_ecc_list.xml:system/etc/cdma_ecc_list.xml
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/apns-conf.xml:system/etc/apns-conf.xml \
     $(LOCAL_PATH)/configs/ecc_list.xml:system/etc/ecc_list.xml \
     $(LOCAL_PATH)/configs/spn-conf.xml:system/etc/spn-conf.xml
+
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    persist.radio.multisim.config=dsds \
+    ro.mtk_lte_support=1 \
+    ro.telephony.sim.count=2 \
+    persist.gemini.sim_num=2 \
+    ril.current.share_modem=2 \
+    ro.mtk_gps_support=1 \
+    persist.debug.xlog.enable=1
 
 # Fingerprint sensor
 #PRODUCT_COPY_FILES += \
