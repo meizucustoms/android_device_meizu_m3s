@@ -34,7 +34,8 @@ TARGET_BOOTLOADER_BOARD_NAME := mt6755
 # CM Hardware
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS += \
-    hardware/cyanogen/cmhw
+    hardware/cyanogen/cmhw \
+    $(DEVICE_PATH)/cmhw
 
 # Kernel
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
