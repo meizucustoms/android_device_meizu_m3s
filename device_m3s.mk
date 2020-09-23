@@ -116,6 +116,7 @@ PRODUCT_COPY_FILES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
+    lib_driver_cmd_mt66xx \
     libwpa_client \
     hostapd \
     dhcpcd.conf \

@@ -16,7 +16,6 @@
 
 #define LOG_TAG "libbt_vendor_mtk"
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
 #include <utils/Log.h>
@@ -24,9 +23,12 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <bt_vendor_lib.h>
-#include <bt_hci_lib.h>
 #include <bt_hci_bdroid.h>
-#include <utils.h>
+#include <hardware/bluetooth.h>
+
+
+// Nougat bringup
+#define BT_HC_STATUS_FAIL -1
 
 /**
  * TODO: check/fix this value. does this make sense for MTK? It is taken from TI
